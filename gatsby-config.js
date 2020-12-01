@@ -1,3 +1,8 @@
+const path = require(`path`);
+require('dotenv').config({
+  path: `./.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -5,6 +10,22 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
+    {
+      resolve: 'gatsby-source-sanity',
+      options: {
+        projectId: process.env.SANITY_STUDIO_API_PROJECT_ID,
+        dataset: process.env.SANITY_STUDIO_API_DATASET,
+        token: process.env.SANITY_TOKEN,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-remote-images`,
+      options: {
+        nodeType: 'SanityBlog',
+        imagePath: 'coverUrl',
+        name: 'coverLocalPath',
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
